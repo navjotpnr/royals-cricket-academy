@@ -1,0 +1,25 @@
+{
+  "overview": "Royals Cricket Academy management app with student registration, attendance tracking, monthly fees collection, receipt generation, and dual-role login for admins and players.",
+  "features": [
+    "Student registration with printable receipt slips",
+    "Dual-role login (Admin PIN + Player name search)",
+    "Daily attendance marking and history",
+    "Monthly fees collection and receipt generation",
+    "Fee tracker showing paid/pending status",
+    "Admin dashboard with stats",
+    "Player self-service profile view",
+    "Full history of registrations and receipts"
+  ],
+  "category": "productivity",
+  "tags": [
+    "cricket",
+    "academy",
+    "sports",
+    "registration",
+    "attendance",
+    "fees",
+    "receipts",
+    "management"
+  ],
+  "last_updated": "2026-05-13T17:00:41.905Z"
+}

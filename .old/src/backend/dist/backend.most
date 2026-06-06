@@ -1,0 +1,78 @@
+// Version: 1.0.0
+type AgeCategory__525822357 =
+  {#Senior; #Under12; #Under14; #Under16; #Under19};
+type AttendanceId__91187254 = Nat;
+type AttendanceStatus__363769450 = {#Absent; #Present};
+type Attendance__923360409 =
+  {
+    date : Text;
+    id : AttendanceId__91187254;
+    status : AttendanceStatus__363769450;
+    studentId : StudentId__585118929
+  };
+type BatchTiming__322343831 = {#Evening; #Morning};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type FeePaymentId__858439402 = Nat;
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type MonthlyFeePayment__213106225 =
+  {
+    amount : Nat;
+    id : FeePaymentId__858439402;
+    month : Text;
+    paymentDate : Text;
+    paymentMode : PaymentMode__260934340;
+    receiptNumber : ReceiptNumber__730329554;
+    studentId : StudentId__585118929
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type PaymentMode__260934340 = {#Cash; #Cheque; #OnlineUPI};
+type ReceiptNumber__730329554 = Text;
+type StudentId__585118929 = Nat;
+type Student__314661756 =
+  {
+    ageCategory : AgeCategory__525822357;
+    batchTiming : BatchTiming__322343831;
+    guardianName : Text;
+    id : StudentId__585118929;
+    locationId : Text;
+    monthlyFees : Nat;
+    name : Text;
+    paymentMode : PaymentMode__260934340;
+    photoUrl : ?Text;
+    receiptNumber : ReceiptNumber__730329554;
+    registrationDate : Timestamp__301639476;
+    registrationFees : Nat;
+    totalPaid : Nat;
+    whatsappNumber : Text
+  };
+type Timestamp__301639476 = Int;
+actor {
+  stable state :
+    {
+      attendances :
+        Map__605269027<AttendanceId__91187254, Attendance__923360409>;
+      counters :
+        {
+          var nextAttendanceId : Nat;
+          var nextFeePaymentId : Nat;
+          var nextFeeReceiptSeq : Nat;
+          var nextRegReceiptSeq : Nat;
+          var nextStudentId : Nat
+        };
+      feePayments :
+        Map__605269027<FeePaymentId__858439402, MonthlyFeePayment__213106225>;
+      locationNames : Map__605269027<Text, Text>;
+      locationPins : Map__605269027<Text, Text>;
+      students : Map__605269027<StudentId__585118929, Student__314661756>
+    }
+};

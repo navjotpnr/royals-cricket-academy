@@ -1,0 +1,135 @@
+type Timestamp = int;
+type StudentInput = 
+ record {
+   ageCategory: AgeCategory;
+   batchTiming: BatchTiming;
+   guardianName: text;
+   locationId: text;
+   monthlyFees: nat;
+   name: text;
+   paymentMode: PaymentMode;
+   photoUrl: opt text;
+   registrationFees: nat;
+   whatsappNumber: text;
+ };
+type StudentId = nat;
+type Student = 
+ record {
+   ageCategory: AgeCategory;
+   batchTiming: BatchTiming;
+   guardianName: text;
+   id: StudentId;
+   locationId: text;
+   monthlyFees: nat;
+   name: text;
+   paymentMode: PaymentMode;
+   photoUrl: opt text;
+   receiptNumber: ReceiptNumber;
+   registrationDate: Timestamp;
+   registrationFees: nat;
+   totalPaid: nat;
+   whatsappNumber: text;
+ };
+type ReceiptNumber = text;
+type PaymentMode = 
+ variant {
+   Cash;
+   Cheque;
+   OnlineUPI;
+ };
+type MonthlyReport = 
+ record {
+   month: text;
+   studentAttendanceSummary: vec AttendanceSummaryEntry;
+   totalCollected: nat;
+   totalPending: nat;
+ };
+type MonthlyFeePayment = 
+ record {
+   amount: nat;
+   id: FeePaymentId;
+   month: text;
+   paymentDate: text;
+   paymentMode: PaymentMode;
+   receiptNumber: ReceiptNumber;
+   studentId: StudentId;
+ };
+type FeeStatusEntry = 
+ record {
+   payment: opt MonthlyFeePayment;
+   student: Student;
+ };
+type FeePaymentId = nat;
+type DashboardStats = 
+ record {
+   feeOverdueCount: nat;
+   receiptsIssued: nat;
+   totalFeesCollected: nat;
+   totalStudents: nat;
+ };
+type BatchTiming = 
+ variant {
+   Evening;
+   Morning;
+ };
+type AttendanceSummaryEntry = 
+ record {
+   daysPresent: nat;
+   percentage: nat;
+   studentId: StudentId;
+   studentName: text;
+   totalDays: nat;
+ };
+type AttendanceStatus = 
+ variant {
+   Absent;
+   Present;
+ };
+type AttendanceId = nat;
+type Attendance = 
+ record {
+   date: text;
+   id: AttendanceId;
+   status: AttendanceStatus;
+   studentId: StudentId;
+ };
+type AgeCategory = 
+ variant {
+   Senior;
+   Under12;
+   Under14;
+   Under16;
+   Under19;
+ };
+service : {
+  changeAdminPin: (locationId: text, oldPin: text, newPin: text) -> (bool);
+  collectMonthlyFee: (studentId: StudentId, month: text, amount: nat,
+   paymentMode: PaymentMode, paymentDate: text) -> (ReceiptNumber);
+  deleteStudent: (locationId: text, adminPin: text, studentId: StudentId) ->
+   (variant {
+      err: text;
+      ok;
+    });
+  getAllMonthlyFeePayments: (locationId: text) ->
+   (vec MonthlyFeePayment) query;
+  getAllStudents: (locationId: text) -> (vec Student) query;
+  getAttendanceByDate: (locationId: text, date: text) ->
+   (vec Attendance) query;
+  getDashboardStats: (locationId: text) -> (DashboardStats) query;
+  getFeeStatusForMonth: (locationId: text, month: text) ->
+   (vec FeeStatusEntry) query;
+  getLocations: () -> (vec record {
+                             text;
+                             text;
+                           }) query;
+  getMonthlyFeePayments: (studentId: StudentId) ->
+   (vec MonthlyFeePayment) query;
+  getMonthlyReport: (locationId: text, month: text) -> (MonthlyReport) query;
+  getStudent: (id: StudentId) -> (opt Student) query;
+  getStudentAttendance: (studentId: StudentId) -> (vec Attendance) query;
+  getStudentByName: (locationId: text, name: text) -> (vec Student) query;
+  markAttendance: (studentId: StudentId, date: text, status:
+   AttendanceStatus) -> (bool);
+  registerStudent: (data: StudentInput) -> (StudentId, ReceiptNumber);
+  verifyAdminPin: (locationId: text, pin: text) -> (bool) query;
+}
